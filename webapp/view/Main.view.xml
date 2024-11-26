@@ -1,0 +1,102 @@
+<mvc:View controllerName="whirpoolportal-boletos-cadastro.portalboletos-cadastro.controller.Main" xmlns:layout="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core" displayBlock="true" xmlns="sap.m">
+	<VBox class="sapUiMediumMargin">
+		<Title class="sapUiSmallMargin" text="Cadastros" level="H4" titleStyle="H4"/>
+		<Panel class="sapUiMediumMarginBottom">
+			<layout:Grid defaultSpan="XL12 L12 M12 S12" width="100%" class="sapUiSmallMarginTopBottom">
+				<Title text="Filtros"/>
+				<layout:content>
+					<HBox alignItems="Center">
+						<VBox width="200px" class="sapUiSmallMarginEnd">
+							<Label design="Bold" text="Cliente"/>
+							<Select width="100%" id="clientSelect" items="{modelReport>clients>/clients}">
+								<core:Item key="{modelReport>clients>key}" text="{modelReport>clients>text}"/>
+							</Select>
+						</VBox>
+						<VBox width="200px" class="sapUiSmallMarginEnd">
+							<Label design="Bold" text="Status"/>
+							<Select width="100%" id="roleSelect" change="onSelectedFilter">
+								<core:Item key="allStates" text="Todos os Status"/>
+								<core:Item key="blocked" text="Bloqueado"/>
+								<core:Item key="unblocked" text="Desbloqueado"/>
+							</Select>
+						</VBox>
+						<VBox class="sapUiSmallMarginTop">
+							<Button text="Iniciar" type="Emphasized" press="onSelectedFilter"/>
+						</VBox>
+					</HBox>
+				</layout:content>
+			</layout:Grid>
+		</Panel>
+		<Panel>
+			<headerToolbar>
+				<Toolbar>
+					<Title text="{= 'Resultados (' + ${modelVisibleRowsCount>/value} + ')'}"/>
+					<ToolbarSpacer/>
+					<SearchField width="20%" placeholder="Pesquisar" search=".onSearch" liveChange="onSearch"/>
+					<Button text="Editar" icon="sap-icon://edit" press="onEdit" visible="{= !${editable>/isSave} }"/>
+					<Button text="Salvar" icon="sap-icon://save" press="onSave" visible="{= ${editable>/isSave} }"/>
+					<Button text="Cancelar" icon="sap-icon://cancel" type="Attention" press="onCancel" visible="{= ${editable>/isSave} }"/>
+				</Toolbar>
+			</headerToolbar>
+			<table:Table id="reportTable" rows="{modelReport>/}" visibleRowCount="10" selectionMode="SingleMaster" selectedIndex="" width="100%"
+				rowSelectionChange=".onRowSelectionChange">
+				<table:columns>
+					<table:Column width="4rem">
+						<Label design="Bold" text="ID"/>
+						<table:template>
+							<Text text="{path: 'modelReport>id', formatter: '.formatter.formatShortId' }"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label design="Bold" text="Nome"/>
+						<table:template>
+							<HBox>
+								<Text text="{modelReport>name}" visible="{= !${modelReport>editing} }"/>
+								<Input value="{modelReport>temp/name}" visible="{= ${modelReport>editing} }" enabled="{modelReport>editing}"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label design="Bold" text="E-mail"/>
+						<table:template>
+							<HBox justifyContent="SpaceBetween">
+								<Text text="{modelReport>email}"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label design="Bold" text="Telefone"/>
+						<table:template>
+							<HBox justifyContent="SpaceBetween">
+								<Text text="{path: 'modelReport>phone', formatter: '.formatter.formatPhoneNumber'}" visible="{= !${modelReport>editing} }"/>
+								<Input value="{modelReport>temp/phone}" visible="{= ${modelReport>editing} }" enabled="{modelReport>editing}"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label design="Bold" text="Cliente"/>
+						<table:template>
+							<HBox justifyContent="SpaceBetween">
+								<Text text="{modelReport>client}"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column>
+						<Label design="Bold" text="Status"/>
+						<table:template>
+							<core:HTML content="{path: 'modelReport>blocked', formatter: '.formatter.formatBlockedStatusWithStyle'}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="5rem">
+						<Label design="Bold" text="Ações"/>
+						<table:template>
+							<Button icon="{= ${modelReport>blocked} ? 'sap-icon://unlocked' : 'sap-icon://locked'}" type="Transparent" press=".onToggleBlockStatus"
+								tooltip="{= ${modelReport>blocked} ? 'Bloquear Usuário ' : 'Desbloquear Usuário'}"/>
+						</table:template>
+					</table:Column>
+				</table:columns>
+			</table:Table>
+		</Panel>
+	</VBox>
+</mvc:View>

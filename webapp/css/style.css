@@ -1,0 +1,27 @@
+/* Enter your custom styles here */
+
+.errorHtmlClass {
+    display: flex !important;
+    background: #bf1212;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+
+    color: #f1f0ed;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.alertHtmlClass {
+    display: flex !important;
+    background: #14a513;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+
+    color: #f1f0ed;
+    font-weight: 600;
+    font-size: 13px;
+}
